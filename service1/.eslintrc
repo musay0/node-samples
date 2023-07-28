@@ -1,0 +1,23 @@
+{
+  "env": {
+    "es6": true,
+    "browser": false,
+    "node": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "plugin:@typescript-eslint/recommended",
+    "google",
+    "plugin:prettier/recommended"
+  ],
+  "parserOptions": {
+    "ecmaVersion": "2022",
+    "sourceType": "module"
+  },
+  "plugins": [
+    "no-loops"
+  ],
+  "rules": {
+    "no-loops/no-loops": 2
+  }
+}
