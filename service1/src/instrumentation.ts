@@ -28,22 +28,27 @@ export const setupInstrumentation = (serviceName: string) => {
       // Express instrumentation expects HTTP layer to be instrumented
       new HttpInstrumentation(),
       new ExpressInstrumentation(),
+      // winston instrumentation for logger
       new WinstonInstrumentation({
         // Optional hook to insert additional context to log metadata.
         // Called after trace context is injected to metadata.
         logHook: (span, record) => {
-          record['resource.service.name'] = provider.resource.attributes['service.name'];
+          record['resource.service.name'] = serviceName;
         },
       }),
     ],
   });
 
+  // check if want to print spans to console using environment variable
+  if (process.env.ENABLE_CONSOLE_SPAN_EXPORTER === 'true') {
+    provider.addSpanProcessor(new SimpleSpanProcessor(new ConsoleSpanExporter()));
+  }
+
+  // Using Zipkin exporter, but any other exporter can be used as well
   const exporter = new ZipkinExporter({
     serviceName: serviceName,
     url: process.env.ZIPKIN_ENDPOINT,
   });
-
-  provider.addSpanProcessor(new SimpleSpanProcessor(new ConsoleSpanExporter()));
   provider.addSpanProcessor(new SimpleSpanProcessor(exporter));
 
   // Initialize the OpenTelemetry APIs to use the NodeTracerProvider bindings
