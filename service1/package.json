@@ -1,13 +1,13 @@
 {
   "name": "service1",
   "version": "1.0.0",
-  "description": "This is a starter for node + express service written using typescript",
-  "main": "index.js",
+  "description": "This is a boilerplate for instrumentation using node + express service written using typescript",
+  "main": "service1.js",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/index.js",
-    "start:second": "cross-env PORT=8081 SERVICE_NAME=service2 node dist/index.js",
-    "dev": "concurrently \"tsc --watch\" \"nodemon -q dist/index.js\"",
+    "start": "node dist/service1.js",
+    "dev": "concurrently \"tsc --watch\" \"nodemon -q dist/service1.js\"",
+    "start:service2": "cross-env PORT=8081 SERVICE_NAME=service2 node dist/service2.js",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint src/**/*.ts --fix",
     "test": "echo \"Error: no test specified\" && exit 1"

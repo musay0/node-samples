@@ -7,22 +7,34 @@ This is a starter for node + express service written using typescript
 docker run -d -p 9411:9411 openzipkin/zipkin
 ```
 
-### Build and exec commands
+### Build commands
 ```
+# fix linting
+yarn lint:fix
+
 # build the source
 yarn build
+```
 
+### Execution commands
+```
 # start server for simultaing other service2,
-yarn start:second
+yarn start:service2
 
 # start service1 for dev, live reload enabled
 yarn dev
 
 # start service1
 yarn start
+```
 
-# fix linting
-yarn lint:fix
+### Command to invoke the API's
+```
+# call test api for valid scenario
+curl 'http://localhost:8080/test/valid'
+
+# call test api for invalid scenario
+curl 'http://localhost:8080/test/valid1'
 ```
 
 ### project setup commands 
@@ -41,5 +53,5 @@ yarn add typescript @types/express @types/node --dev
 npx tsc --init
 
 # watch changes to file and live reload for dev
-arn add concurrently nodemon  --dev
+yarn add concurrently nodemon  --dev
 ```
