@@ -9,20 +9,20 @@ docker run -d -p 9411:9411 openzipkin/zipkin
 
 ### Build and exec commands
 ```
+# fix linting
+yarn lint:fix
+
 # build the source
 yarn build
 
 # start server for simultaing other service2,
-yarn start:second
+yarn start:service2
 
 # start service1 for dev, live reload enabled
 yarn dev
 
 # start service1
 yarn start
-
-# fix linting
-yarn lint:fix
 ```
 
 ### project setup commands 
@@ -41,5 +41,5 @@ yarn add typescript @types/express @types/node --dev
 npx tsc --init
 
 # watch changes to file and live reload for dev
-arn add concurrently nodemon  --dev
+yarn add concurrently nodemon  --dev
 ```

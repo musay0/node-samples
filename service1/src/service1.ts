@@ -4,8 +4,7 @@ dotenv.config();
 
 // setup Instrumentation
 import { setupInstrumentation } from './instrumentation';
-const serviceName = process.env.SERVICE_NAME || 'service1';
-setupInstrumentation(serviceName);
+setupInstrumentation();
 
 // regular express stuff
 import express, { Express, Request, Response } from 'express';
@@ -34,25 +33,6 @@ app.get('/test/:scenario', async (req: Request, res: Response) => {
 });
 
 // simulate an endpoint that returns valid data
-app.post('/valid', (req: Request, res: Response) => {
-  logger.info('valid scenario invoked');
-  // send 200 status code and original payload in data attribute
-  res.status(200).send({
-    data: req.body,
-  });
-});
-
-// simulate a broken endpoint
-app.post('/invalid', async (req: Request, res: Response) => {
-  logger.info('invalid scenario invoked');
-  // add a delay of 3 seconds before sending an error response
-  await new Promise((resolve) => setTimeout(resolve, 3000));
-  // send 400 status code and original payload in data attribute
-  res.status(400).send({
-    data: req.body,
-  });
-});
-
 // start listening
 app.listen(port, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
