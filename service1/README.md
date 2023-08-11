@@ -2,16 +2,24 @@
 
 This is a starter for node + express service written using typescript
 
+### start zipkin service
+```
+docker run -d -p 9411:9411 openzipkin/zipkin
+```
+
 ### Build and exec commands
 ```
 # build the source
 yarn build
 
-# start server
-yarn start
+# start server for simultaing other service2,
+yarn start:second
 
-# start server for dev, live reload enabled
+# start service1 for dev, live reload enabled
 yarn dev
+
+# start service1
+yarn start
 
 # fix linting
 yarn lint:fix
