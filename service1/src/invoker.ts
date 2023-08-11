@@ -1,4 +1,5 @@
 import { trace, context, propagation, SpanStatusCode } from '@opentelemetry/api';
+import logger from './logger';
 
 const tracerName = process.env.SERVICE_NAME || 'service1';
 // default headers for JSON
@@ -19,15 +20,16 @@ const defaultHeaders = {
 export const makeAPICall = async (options: { method: string; url: string; payload: object }) => {
   // get a tracer from global trace provider
   const tracer = trace.getTracer(tracerName);
-  // Extract trace context from parent context
-  const span = tracer.startSpan(`make API call`, {}, context.active());
+  const activeContext = context.active();
 
+  // Extract trace context from parent context
+  const span = tracer.startSpan(`make API call`, { attributes: { value: 'a1' } }, activeContext);
   try {
     // Convert trace context to headers
     const traceHeaders = {};
     propagation.inject(context.active(), traceHeaders);
 
-    const url = `${process.env.SERVICE2_ENDPOINT}${options.url}`;
+    const requestUrl = `${process.env.SERVICE2_ENDPOINT}${options.url}`;
     const requestOptions = {
       method: options.method,
       headers: {
@@ -36,10 +38,9 @@ export const makeAPICall = async (options: { method: string; url: string; payloa
       },
       body: JSON.stringify(options.payload),
     };
-    // Log a message with trace information
-    console.log(`API Call: ${options.method} ${options.url}, Trace ID: ${span.spanContext().traceId}`);
 
-    const response: Response = await fetch(url, requestOptions);
+    logger.info(`API Call: ${options.method} ${options.url} ${span.spanContext().spanId}`);
+    const response: Response = await fetch(requestUrl, requestOptions);
     if (!response.ok) throw new Error(response.statusText);
     const data = await response.json();
     span.setStatus({ code: SpanStatusCode.OK });
@@ -51,11 +52,7 @@ export const makeAPICall = async (options: { method: string; url: string; payloa
       message: errorMessage,
     });
     // Log an error message with trace information
-    console.error(
-      `API Call Error: ${options.method} ${options.url}, Trace ID: ${
-        span.spanContext().traceId
-      }}, Error: ${errorMessage}`,
-    );
+    logger.error(`API Call Error: ${options.method} ${options.url}, Error: ${errorMessage}`);
   } finally {
     span.end();
   }

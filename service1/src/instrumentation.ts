@@ -1,9 +1,10 @@
 'use strict';
 
-import { trace, diag, DiagConsoleLogger, DiagLogLevel } from '@opentelemetry/api';
+import { trace } from '@opentelemetry/api';
 
 // Not functionally required but gives some insight what happens behind the scenes
-diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.INFO);
+// import { trace, diag, DiagConsoleLogger, DiagLogLevel } from '@opentelemetry/api';
+// diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.INFO);
 
 import { registerInstrumentations } from '@opentelemetry/instrumentation';
 import { NodeTracerProvider } from '@opentelemetry/sdk-trace-node';
@@ -13,6 +14,7 @@ import { Resource } from '@opentelemetry/resources';
 import { SemanticResourceAttributes } from '@opentelemetry/semantic-conventions';
 import { ExpressInstrumentation } from '@opentelemetry/instrumentation-express';
 import { HttpInstrumentation } from '@opentelemetry/instrumentation-http';
+import { WinstonInstrumentation } from '@opentelemetry/instrumentation-winston';
 
 export const setupInstrumentation = (serviceName: string) => {
   const provider = new NodeTracerProvider({
@@ -26,6 +28,13 @@ export const setupInstrumentation = (serviceName: string) => {
       // Express instrumentation expects HTTP layer to be instrumented
       new HttpInstrumentation(),
       new ExpressInstrumentation(),
+      new WinstonInstrumentation({
+        // Optional hook to insert additional context to log metadata.
+        // Called after trace context is injected to metadata.
+        logHook: (span, record) => {
+          record['resource.service.name'] = provider.resource.attributes['service.name'];
+        },
+      }),
     ],
   });
 

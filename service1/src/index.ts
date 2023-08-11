@@ -10,6 +10,7 @@ setupInstrumentation(serviceName);
 // regular express stuff
 import express, { Express, Request, Response } from 'express';
 import { makeAPICall } from './invoker';
+import logger from './logger';
 
 const app: Express = express();
 app.use(express.json());
@@ -21,6 +22,7 @@ const port = process.env.PORT;
  */
 app.get('/test/:scenario', async (req: Request, res: Response) => {
   const scenario = req.params.scenario === 'valid' ? 'valid' : 'invalid';
+  logger.info(`Executing scenario: ${scenario}`);
   const data = await makeAPICall({
     method: 'POST',
     url: `/${scenario}`,
@@ -28,13 +30,12 @@ app.get('/test/:scenario', async (req: Request, res: Response) => {
       name: 'tester1',
     },
   });
-  console.log(`data: ${data}`);
   res.status(200).json(data);
 });
 
 // simulate an endpoint that returns valid data
 app.post('/valid', (req: Request, res: Response) => {
-  console.log(req.body);
+  logger.info('valid scenario invoked');
   // send 200 status code and original payload in data attribute
   res.status(200).send({
     data: req.body,
@@ -43,7 +44,7 @@ app.post('/valid', (req: Request, res: Response) => {
 
 // simulate a broken endpoint
 app.post('/invalid', async (req: Request, res: Response) => {
-  console.log(req.body);
+  logger.info('invalid scenario invoked');
   // add a delay of 3 seconds before sending an error response
   await new Promise((resolve) => setTimeout(resolve, 3000));
   // send 400 status code and original payload in data attribute
