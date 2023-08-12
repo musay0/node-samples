@@ -6,7 +6,7 @@ This is a starter for a Node.js + Express service written in TypeScript. It util
 
 ### Prerequisites
 
-Make sure you have Docker installed to run the Zipkin service locally.
+Make sure you have Docker installed to run the Jaeger service locally.
 
 ### Start Jaeger Service
 This will be reachable at [JaegerUI](http://localhost:16686/)
