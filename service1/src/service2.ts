@@ -9,7 +9,6 @@ setupInstrumentation();
 
 // regular express stuff
 import express, { Express, Request, Response } from 'express';
-import { makeAPICall } from './invoker';
 import logger from './logger';
 
 const app: Express = express();
