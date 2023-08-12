@@ -1,5 +1,5 @@
 {
-  "name": "node-opentelemetry-boilerplate",
+  "name": "express-otel-boilerplate",
   "version": "1.0.0",
   "description": "This is a boilerplate for instrumentation using node + express service written using typescript",
   "main": "index.js",

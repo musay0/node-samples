@@ -1,12 +1,14 @@
 # Node Backend with Instrumentation (opentelemetry)
 
-This is a starter for a Node.js + Express service written in TypeScript. It utilizes OpenTelemetry for distributed tracing and includes a configuration for exporting traces to Zipkin. The service is equipped with a logger configured using OpenTelemetry, ensuring that trace and span IDs are seamlessly integrated into the logs. The project consists of two services: `service1`(index.ts) and `service2`(service2.ts).
+This is a starter for a [NodeJs](https://nodejs.org/en) + [Express.js](https://expressjs.com/) service written in [TypeScript](https://www.typescriptlang.org/). The project consists of two services: `service1`(index.ts) and `service2`(service2.ts).<br> 
+It utilizes [OpenTelemetry](https://opentelemetry.io/) for distributed tracing and includes a configuration for exporting traces.<br>
+The service is equipped with a logger ([WinstonJs](https://github.com/winstonjs/winston)) configured using OTel, ensuring tracing is seamlessly injected into the logs.<br> 
 
 ## Getting Started
 
 ### Prerequisites
 
-Make sure you have Docker installed to run the Jaeger service locally.
+Make sure you have [Docker](https://www.docker.com/) installed to run the [Jaeger service](https://www.jaegertracing.io/docs/1.47/getting-started/) locally.
 
 ### Start Jaeger Service
 This will be reachable at [JaegerUI](http://localhost:16686/)
