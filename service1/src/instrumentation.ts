@@ -1,6 +1,6 @@
 'use strict';
 
-import { trace, Span } from '@opentelemetry/api';
+import { trace } from '@opentelemetry/api';
 
 // Not functionally required but gives some insight what happens behind the scenes
 // import { trace, diag, DiagConsoleLogger, DiagLogLevel } from '@opentelemetry/api';
@@ -62,23 +62,4 @@ export const setupInstrumentation = () => {
   provider.register();
 
   return trace.getTracer(serviceName);
-};
-
-/**
- * Execute the provided function within the context of a new span.
- *
- * @param {string} name - The name of the span.
- * @param {Function} fn - The function to execute within the span.
- * @return {Promise<T>} A promise that resolves when the function execution is complete.
- */
-export const withTracing = async <T>(name: string, fn: (span: Span) => Promise<T>): Promise<T> => {
-  const tracer = trace.getTracer(serviceName);
-  // this sets the span for exection function as active, this is picked by the logger Instrumentation
-  return tracer.startActiveSpan(name, async (span: Span) => {
-    try {
-      return await fn(span);
-    } finally {
-      span.end();
-    }
-  });
 };

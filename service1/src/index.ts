@@ -8,8 +8,10 @@ setupInstrumentation();
 
 // regular express stuff
 import express, { Express, Request, Response } from 'express';
-import { makeAPICall } from './invoker';
+
+// local imports
 import logger from './logger';
+import { makeAPICall } from './invoker';
 
 const app: Express = express();
 app.use(express.json());
